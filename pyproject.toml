@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "html2rich"
+version = "0.1.0"
+description = "A simple html to rich renderable converter"
+authors = ["Grzegorz Koperwas <admin@grzegorzkoperwas.site>"]
+license = "GPLv2"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rich = "^13.3.3"
+beautifulsoup4 = "^4.12.0"
+tinycss2 = "^1.2.1"
+lxml = "^4.9.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+ruff = "^0.0.259"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
