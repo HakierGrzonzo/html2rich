@@ -1,12 +1,17 @@
 from bs4 import BeautifulSoup as Soup, Tag
 from logging import getLogger
 
+from rich.console import Group
+from html2rich.css_parser.rule_manager import RuleManager
+
 from html2rich.node import Node
 
-logger = getLogger(__name__) 
+logger = getLogger(__name__)
+
 
 class Document:
     def __init__(self, html_str: str | bytes) -> None:
+        self.css_resolver = RuleManager()
         self._soup = Soup(html_str, features="lxml")
 
     def get_head(self):
@@ -29,6 +34,8 @@ class Document:
         return body
 
     def get_displayable_node_tree(self):
-        return Node(self.get_body())
-
-
+        return Group(
+            *Node(
+                self.get_body(), self.css_resolver.get_nestable_copy()
+            ).as_rich()
+        )
