@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from rich.text import Text
 
@@ -41,14 +41,40 @@ def rules_as_markup(rules) -> Tuple[str, str]:
     return "", ""
 
 
-def wrap_strings_into_text(elements: List):
+def wrap_strings_into_text(elements: List, rules: Dict):
+    css_to_rich_justify = {
+        "justify": "full",
+        "left": "left",
+        "right": "right",
+        "center": "center",
+    }
+    justify = css_to_rich_justify.get(rules.get("text-align", "left"))
     last_string = ""
     for element in elements:
         if not isinstance(element, str):
             if len(last_string):
-                yield Text.from_markup(last_string, end="")
+                yield Text.from_markup(last_string, end="", justify=justify)
                 last_string = ""
             yield element
         else:
             last_string += element
-    yield Text.from_markup(last_string, end="")
+    yield Text.from_markup(last_string, end="", justify=justify)
+
+
+def filter_repeating(iterable, char):
+    try:
+        while True:
+            new = next(iterable)
+            yield new
+            if new == char:
+                while new == char:
+                    new = next(iterable)
+                yield new
+    except StopIteration:
+        pass
+
+
+def normalize_text(text: str):
+    text = text.replace("\n", " ")
+
+    return "".join(filter_repeating(iter(text), " "))

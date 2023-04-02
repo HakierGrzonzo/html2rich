@@ -322,4 +322,8 @@ a {
     text-decoration: underline;
     color: blue;
 }
+
+p {
+    text-align: justify;
+}
 """
