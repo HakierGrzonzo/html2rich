@@ -2,7 +2,7 @@ from bs4 import Tag
 from rich.console import Group
 from rich.columns import Columns
 from rich.padding import Padding
-from rich.text import Text
+from rich.markup import escape
 
 from html2rich.css_parser.rule_manager import RuleManager
 from html2rich.parse_margins import parse_spacings
@@ -27,8 +27,8 @@ class Node:
                     child, self._css_resolver.get_nestable_copy()
                 ).as_rich()
             else:
-                yield markup_start + normalize_text(
-                    child.get_text()
+                yield markup_start + escape(
+                    normalize_text(child.get_text())
                 ) + markup_end
 
     def as_rich(self):
